@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
+import SamplePackage
 
 struct ContentView: View {
-    
     var prospects = Prospects()
-    
     
     var body: some View {
         TabView {
@@ -19,35 +18,70 @@ struct ContentView: View {
                     Image(systemName: "person.3")
                     Text("Everyone")
                 }
-            
             ProspectView(filter: .contacted)
                 .tabItem {
                     Image(systemName: "checkmark.circle")
                     Text("Contacted")
                 }
-            
             ProspectView(filter: .uncontacted)
                 .tabItem {
                     Image(systemName: "questionmark.diamond")
                     Text("Uncontacted")
                 }
-            
             MeView()
                 .tabItem {
                     Image(systemName: "person.crop.square")
                     Text("Me")
                 }
+                
         }
         .environmentObject(prospects)
-                .onAppear {
-                    if #available(iOS 15.0, *) {
-                        let appearance = UITabBarAppearance()
-                        UITabBar.appearance().scrollEdgeAppearance = appearance
-                    }
-                }
+        .onAppear {
+            if #available(iOS 15.0, *) {
+                let appearance = UITabBarAppearance()
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
+        }   
     }
 }
 
+
+
+//struct ContentView: View {
+//
+//
+//    var body: some View {
+//        VStack {
+//            Button("Ask Permission") {
+//
+//                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+//                    if success {
+//                        print("All set!")
+//                    } else if let error = error {
+//                        print(error.localizedDescription)
+//                        }
+//                    }
+//            }
+//
+//
+//            Button("Send Notifications") {
+//                let content = UNMutableNotificationContent()
+//                content.title = "Feed the cat"
+//                content.subtitle = "It looks hungry"
+//                content.sound = UNNotificationSound.default
+//
+//                // show this notification five seconds from now
+//                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+//
+//                // choose a random identifier
+//                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+//
+//                // add our notification request
+//                UNUserNotificationCenter.current().add(request)
+//            }
+//        }
+//    }
+//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -143,6 +177,8 @@ struct ContentView_Previews: PreviewProvider {
 //        }
 //    }
 //}
+
+
 // struct ContentView: View {
 //    var body: some View {
 //        Image("example")
