@@ -7,43 +7,83 @@
 
 import SwiftUI
 
-class Prospect: Identifiable, Codable {
+
+
+class Prospect: Codable, Identifiable, Comparable {
+   
+    
+   
     var id = UUID()
-    var name = "Anonymous"
-    var emailAddress = ""
-    fileprivate(set)  var isContacted = false
+    var name = "Anon"
+    var emailID = ""
+    var created = Date()
+    
+    fileprivate(set) var contacted = false
+    
+    static func < (lhs: Prospect, rhs: Prospect) -> Bool {
+        lhs.name < rhs.name
+    }
+    
+    static func == (lhs: Prospect, rhs: Prospect) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
-
 class Prospects: ObservableObject {
-    @Published private(set) var people: [Prospect]
-    static let saveKey = "SavedData"
+    @Published var people: [Prospect]
+    
+    static let key = "SavedData"
+    
     
     init() {
-        if let data = UserDefaults.standard.data(forKey: Self.saveKey) {
-            if let decoded = try? JSONDecoder().decode([Prospect].self, from: data) {
-                people = decoded
-                return
-            }
-        }
-        
         people = []
     }
     
-   private func save() {
-        if let encoded = try? JSONEncoder().encode(people) {
-            UserDefaults.standard.set(encoded, forKey: Self.saveKey)
-        }
+    
+    
+    func toggle(_ prospect: Prospect) {
+        objectWillChange.send()
+        prospect.contacted.toggle()
+        saveData()
     }
     
     func add(_ prospect: Prospect) {
         people.append(prospect)
-        save()
+        saveData()
     }
     
-    func toggle(_ prospect: Prospect) {
-        objectWillChange.send()
-        prospect.isContacted.toggle()
-        save()
+    
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
     }
+    
+  
+    
+    func saveData() {
+        do {
+            let filename = getDocumentsDirectory().appendingPathComponent("savedata.txt")
+            let data = try JSONEncoder().encode(people)
+            try data.write(to: filename, options: [.atomic, .completeFileProtection])
+            print("Able to save data")
+        } catch {
+            print("Unable to save data")
+        }
+        
+    }
+    
+    func loadData() {
+        let filename = getDocumentsDirectory().appendingPathComponent("savedata.txt")
+        
+        do {
+            let data = try Data(contentsOf: filename)
+            people = try JSONDecoder().decode([Prospect].self, from: data)
+            print("Able to load data")
+        } catch {
+            print("Unable to load data")
+        }
+    }
+    
 }
+
+

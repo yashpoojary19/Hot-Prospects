@@ -8,7 +8,9 @@
 import SwiftUI
 import SamplePackage
 
+
 struct ContentView: View {
+    
     var prospects = Prospects()
     
     var body: some View {
@@ -18,32 +20,48 @@ struct ContentView: View {
                     Image(systemName: "person.3")
                     Text("Everyone")
                 }
+            
             ProspectView(filter: .contacted)
                 .tabItem {
                     Image(systemName: "checkmark.circle")
                     Text("Contacted")
+                    
                 }
+            
             ProspectView(filter: .uncontacted)
                 .tabItem {
-                    Image(systemName: "questionmark.diamond")
+                    Image(systemName: "questionmark.circle")
                     Text("Uncontacted")
+                    
                 }
+            
+            
             MeView()
                 .tabItem {
                     Image(systemName: "person.crop.square")
-                    Text("Me")
+                    Text("You")
+                    
                 }
-                
         }
         .environmentObject(prospects)
         .onAppear {
-            if #available(iOS 15.0, *) {
-                let appearance = UITabBarAppearance()
-                UITabBar.appearance().scrollEdgeAppearance = appearance
-            }
-        }   
+                    if #available(iOS 15.0, *) {
+                        let appearance = UITabBarAppearance()
+                        UITabBar.appearance().scrollEdgeAppearance = appearance
+                    }
+                }
     }
 }
+
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+
 
 
 
@@ -83,11 +101,7 @@ struct ContentView: View {
 //    }
 //}
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+
 
 
 //
