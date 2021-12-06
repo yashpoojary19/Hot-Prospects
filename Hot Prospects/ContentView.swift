@@ -9,7 +9,7 @@ import SwiftUI
 import SamplePackage
 
 
-struct ContentView: View {
+struct ContentView: View { 
     
     var prospects = Prospects()
     

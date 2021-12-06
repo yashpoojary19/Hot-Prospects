@@ -60,6 +60,7 @@ class Prospects: ObservableObject {
     
   
     
+    
     func saveData() {
         do {
             let filename = getDocumentsDirectory().appendingPathComponent("savedata.txt")
@@ -83,7 +84,9 @@ class Prospects: ObservableObject {
             print("Unable to load data")
         }
     }
+
     
 }
+
 
 
