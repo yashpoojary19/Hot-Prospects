@@ -86,7 +86,7 @@ struct ProspectView: View {
                 prospects.loadData()
             }
             .sheet(isPresented: $isShowingScanner) {
-                CodeScannerView(codeTypes: [.qr], simulatedData: "Divya\nkhush@yash.com", completion: handleScan)
+                CodeScannerView(codeTypes: [.qr], simulatedData: "Yash\nyash@yash.com", completion: handleScan)
             }
              
                 .navigationTitle(title)
